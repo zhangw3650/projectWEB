@@ -1,4 +1,12 @@
 $(function(){
+    /*----------下拉菜单-----------*/
+    var currentAddr = $(".currentAddress");
+    console.log(currentAddr)
+    $(".select>li").click(function(){
+        currentAddr.text($(this).text());
+    })
+
+    
     /*-----------图片轮播-----------*/
 	//1. 获取图片数组
 	//2. 定时器实现图片切换
@@ -8,7 +16,7 @@ $(function(){
     var indInfo = $(".imgNav").children();  //索引数组
     var imgIndex = 0;  //初始下标
     var timer;
-    timer = setInterval(autoPlay, 1000);  //定时器
+    timer = setInterval(autoPlay, 100000000);  //定时器
 
     function autoPlay(){
         console.log(imgs[imgIndex])
@@ -30,7 +38,7 @@ $(function(){
     })
 
     banner.mouseout(function(){
-        timer = setInterval(autoPlay, 1000)
+        timer = setInterval(autoPlay, 100000000)
     })
 })
 

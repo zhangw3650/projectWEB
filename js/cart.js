@@ -7,30 +7,33 @@ $(function(){
         if(isTrue){
             //选中操作,checked = true
             //获取所有商品前的选择框,设置选中属性
-            $("[name=check]").prop('checked', 'true');
+            $("[name=check]").prop('checked', true);
         }else{
             //取消全选
             $("[name=check]").removeAttr("checked");
             // $("#checkall").prop("checked", false);
-        }
+        };
+        countItem();
     });
 
 
     //2.通过商品选择框反选操作全选按钮
     $("[name=check]").click(function(){
-        console.log(isTrue)
+        console.log($("[name=check]"))
+        console.log($("input[name=check]"))
         //:checked 表示匹配被选中的元素
         //获取所有为被选中元素个数,判断是否小于等于零
-        if($("input[name=check]").not("input:checked").size() <= 0){
+        if($("[name=check]").not("input:checked").size() <= 0){
             //全选按钮也应该是选中状态
-            $("#checkall").prop("checked", "true");
+            $("#checkall").prop("checked", true);
             isTrue = true;
         }else{
             //存在未勾选的元素
             $("#checkall").prop("checked", false);
             isTrue = false;
             // $("#checkall").removeAttr("checked");
-        }
+        };
+        countItem();
     });
 
 
@@ -87,26 +90,24 @@ $(function(){
     });
 
 
-    //6总数量和总价格联动
-    function countItem(){
-        //各类商品的数量值和总价
-        //获取各类商品的总数
-        var sum = 0;
-        $("[name=count]").each(function(){
-            //遍历所有的name=count的输入框,取值相加
-            sum += Number($(this).val());
-        });
+	//6. 总数量和总价格变动
+	function countItem(){
+		var sum = 0;
+ 		var priceSum = 0;
+ 		/*
+ 		1. 获取所有选中的元素
+ 		2. 遍历被选中的元素,获取父节点 $(this).parent().parent()查找 .g-item
+ 		3. 通过父节点查找后代元素 find("selector");
+ 		4. 获取当前商品信息的数量和价格
+ 		*/
+ 		$("[name=check]:checked").each(function(){
+ 			sum += Number($(this).parent().parent().find('[name=count]').val());
+ 			var priceStr=$(this).parent().parent().find('strong').html();
+ 			priceSum += Number(priceStr.substring(1,priceStr.length));
+ 		});
+ 		$(".submit-price span").html('&yen;'+priceSum);
+ 		$(".submit-count span").text(sum);
+ 	};
 
-        //获取所有的商品的总价格
-        var priceSum = 0;
-        $(".t-sum strong").each(function(){
-            var priceStr = $(this).text();  //&yen;169
-            var price = Number(priceStr.substring(1, priceStr.length));
-            priceSum += price;
-        });
-        //在页面底部显示数量和价格
-		$(".submit-count span").html(sum);
-		$(".submit-price span").html('&yen;'+priceSum);
-    };
 
 })
